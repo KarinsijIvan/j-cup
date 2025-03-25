@@ -18,4 +18,4 @@ init_point_db()
 
 app.include_router(user.router, prefix="/user", tags=["user"])
 app.include_router(point.router, prefix="/point", tags=["point"])
-app.include_router(ping.router, prefix="", tags=["Ping"])
+app.include_router(ping.router, prefix="", tags=["default"])

@@ -14,7 +14,7 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/sign-up")
+@router.get("/sign-up")
 async def sign_up(user: UserCreate, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(
         (User.login == user.login)
@@ -27,7 +27,7 @@ async def sign_up(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return {"message": "Пользователь успешно создан"}
 
-@router.post("/sign-in")
+@router.get("/sign-in")
 def sign_in(login: str, password: str, db: Session = Depends(get_db)):
     if not login or not password:
         raise HTTPException(status_code=400, detail="Введите логин и пароль")

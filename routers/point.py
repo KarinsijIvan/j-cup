@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Header
+from user import get_user_from_token
 from sqlalchemy.orm import Session
 from models.point import Point
 from schemas.point import PointCreate
@@ -19,4 +20,19 @@ async def add_point(point: PointCreate, db: Session = Depends(get_db)):
     db.add(new_point)
     db.commit()
     db.refresh(new_point)
-    return {"message": "Точка добавлена"}
+    return {"message": "Point add"}
+
+
+@router.get("/list")
+def get_point_list(db: Session = Depends(get_db)):
+    points = db.query(Point).all()
+    return points
+
+
+@router.get("/{point_id}")
+def get_point(point_id: int, db: Session = Depends(get_db)):
+    point = db.query(Point).filter(Point.id == point_id).first()
+    if point is None:
+        raise HTTPException(status_code=404, detail="Point not found")
+    return point
+

@@ -10,6 +10,6 @@ class Point(Base):
     latitude = Column(Float)
     longitude = Column(Float)
     user_token = Column(String)
-    likes=Column(Integer,default=0)
+    estimation = Column(Integer,default=0)
     
     

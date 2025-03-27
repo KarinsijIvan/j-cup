@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import user, point, ping,addLike,delLike
+from routers import user, point, ping,add_estimation,del_estimation
 from db.user_db import init_db as init_user_db
 from db.point_db import init_db as init_point_db
 from fastapi.middleware.cors import CORSMiddleware

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, Header-
+from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from models.estimation import Estimation
 from models.point import Point
@@ -19,7 +19,7 @@ def get_db():
 
 
 
-@router.post("/del_estimation")
+@router.post("/del_estimation/")
 def del_estimation(point_id: int, point_db, estimation_db: Session = Depends(get_db)):
 
     point = point_db.query(Point).filter(Point.id == point_id).first()

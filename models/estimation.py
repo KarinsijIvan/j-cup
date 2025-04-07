@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float
+from sqlalchemy import Column, Integer, Float, String
 from db.point_db import Base
 
 

@@ -1,29 +1,21 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from models.estimation import Estimation
+from db.estimation_db import get_db as estimation_get_db
+from db.point_db import get_db as point_get_db
 from models.point import Point
-from db.point_db import SessionLocal as PointSessionLocal
-from db.estimation_db import SessionLocal as EstimationSessionLocal
+from models.estimation import Estimation
+from schemas.estimation import EstimationDelite
 
-
-router = APIRouter()
-
-def get_db():
-    point_db = PointSessionLocal()
-    estimation_db = EstimationSessionLocal()
-    try:
-        yield point_db, estimation_db
-    finally:
-        point_db.close()
-        estimation_db.close()
-
-
+router = APIRouter(prefix="/estimations", tags=["Estimations"])
 
 @router.post("/del_estimation/")
-def del_estimation(point_id: int, point_db, estimation_db: Session = Depends(get_db)):
+async def del_estimation(estimation_data: EstimationDelite, point_db: Session = Depends(point_get_db), estimation_db: Session = Depends(estimation_get_db)):
 
-    point = point_db.query(Point).filter(Point.id == point_id).first()
-    estimation = estimation_db.query(Estimation).filter(Estimation.point_id == point_id).first()
+    point = point_db.query(Point).filter(Point.id == estimation_data.point_id).first()
+    estimation = estimation_db.query(Estimation).filter(
+        Estimation.point_id == estimation_data.point_id,
+        Estimation.user_token == estimation_data.user_token
+    ).first()
 
     if estimation is None:
         raise HTTPException(status_code=404, detail="Like not found")
@@ -34,7 +26,7 @@ def del_estimation(point_id: int, point_db, estimation_db: Session = Depends(get
     elif estimation.estimation == -1:
         point.estimation += 1
 
-    estimation_db.query.filter_by(point_id=point_id).delete()
+    estimation_db.query(Estimation).filter(Point.id == estimation_data.point_id).first().delete()
 
     point_db.commit()
     estimation_db.commit()

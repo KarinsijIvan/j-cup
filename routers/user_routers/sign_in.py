@@ -1,11 +1,10 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from models.user import User
-from schemas.user import UserCreate, UserSignIn  # Добавили UserSignIn
+from schemas.user import UserSignIn
 from db.user_db import SessionLocal
-import re
 
-router = APIRouter()
+router = APIRouter(prefix="/user", tags=["User"])
 
 def get_db():
     db = SessionLocal()

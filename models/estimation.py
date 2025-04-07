@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from db.point_db import Base
+from db.estimation_db import Base
 
 
 class Estimation(Base):

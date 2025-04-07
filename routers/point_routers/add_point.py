@@ -1,19 +1,10 @@
-from fastapi import APIRouter, HTTPException, Depends, Header
-#from user import get_user_from_token
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from models.point import Point
 from schemas.point import PointCreate
-from db.point_db import SessionLocal
+from db.point_db import get_db
 
-router = APIRouter()
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
+router = APIRouter(prefix="/point", tags=["Point"])
 
 
 @router.post("/add_point/")

@@ -1,19 +1,10 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from models.user import User
-from schemas.user import UserCreate, UserSignIn  # Добавили UserSignIn
-from db.user_db import SessionLocal
-import re
+from db.user_db import get_db
 
-router = APIRouter()
+router = APIRouter(prefix="/user", tags=["User"])
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-        
 @router.post("/get_user_from_token/")
 def get_user_from_token(token: str, db: Session = Depends(get_db)):
     try:

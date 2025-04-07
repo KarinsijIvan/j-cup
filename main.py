@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from routers import ping
 from db.user_db import init_db as init_user_db
 from db.point_db import init_db as init_point_db
+from db.estimation_db import init_db as init_estimation_db
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -21,9 +22,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 init_user_db()
 init_point_db()
+init_estimation_db()
 
+app.include_router(ping.router)
 
 app.include_router(get_user_from_token.router)
 app.include_router(sign_in.router)

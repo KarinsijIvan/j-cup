@@ -1,22 +1,12 @@
 from fastapi import APIRouter, HTTPException, Depends, Header
-#from user import get_user_from_token
 from sqlalchemy.orm import Session
 from models.point import Point
-from schemas.point import PointCreate
-from db.point_db import SessionLocal
+from db.point_db import get_db
 
-router = APIRouter()
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+router = APIRouter(prefix="/point", tags=["Point"])
 
 
-
-@router.get("/{point_id}/")
+@router.get("/{point_id:int}/")
 def get_point(point_id: int, db: Session = Depends(get_db)):
     point = db.query(Point).filter(Point.id == point_id).first()
     if point is None:

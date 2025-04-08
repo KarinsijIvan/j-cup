@@ -10,6 +10,8 @@ import uvicorn
 from routers.user_routers import get_user_from_token, sign_in,sign_up 
 from routers.point_routers import add_point, get_point,get_point_list
 from routers.estimation_routers import add_estimation, del_estimation
+from routers.proposal_routers import  add_proposal, get_proposal, get_proposal_list
+from routers.route_routers import  add_route, get_route, get_route_list
 
 
 
@@ -36,6 +38,14 @@ app.include_router(sign_up.router)
 app.include_router(add_point.router)
 app.include_router(get_point.router)
 app.include_router(get_point_list.router)
+
+app.include_router(add_proposal.router)
+app.include_router(get_proposal.router)
+app.include_router(get_proposal_list.router)
+
+app.include_router(add_route.router)
+app.include_router(get_route.router)
+app.include_router(get_route_list.router)
 
 app.include_router(add_estimation.router)
 app.include_router(del_estimation.router)

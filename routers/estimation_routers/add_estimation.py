@@ -33,9 +33,13 @@ async def add_estimation(estimation_data: EstimationCreate, point_db: Session = 
 
     estimation_db.add(new_estimation)
 
-    point.estimation += new_estimation.estimation
+    if new_estimation.estimation == 1:
+        point.like += 1
+    elif new_estimation.estimation == -1:
+        point.dislike += 1
 
     estimation_db.commit()
     point_db.commit()
     estimation_db.refresh(new_estimation)
+
     return {"message": "Estimation added successfully", "id": new_estimation.id}

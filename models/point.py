@@ -7,7 +7,14 @@ class Point(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     description = Column(String)
+
+    type = Column(String)
+
     coordinates = Column(JSON, default=None)
     sphere = Column(String, default=None)
+
+
     user_token = Column(String)
-    estimation = Column(Integer, default=0)
+
+    like = Column(Integer, default=0)
+    dislike = Column(Integer, default=0)

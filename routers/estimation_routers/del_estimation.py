@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import delete
 from sqlalchemy.orm import Session
 from db.estimation_db import get_db as estimation_get_db
 from db.point_db import get_db as point_get_db
@@ -21,12 +22,17 @@ async def del_estimation(estimation_data: EstimationDelite, point_db: Session = 
         raise HTTPException(status_code=404, detail="Like not found")
 
     if estimation.estimation == 1:
-        point.estimation -= 1
+        point.like -= 1
 
     elif estimation.estimation == -1:
-        point.estimation += 1
+        point.dislike -= 1
 
-    estimation_db.query(Estimation).filter(Point.id == estimation_data.point_id).first().delete()
+    # estimation_db.query(Estimation).filter(Point.id == estimation_data.point_id).first().delete()
+
+    # Estimation.delete().where(
+    #     Estimation.point_id == estimation_data.point_id,
+    #     Estimation.user_token == estimation_data.user_token
+    # )
 
     point_db.commit()
     estimation_db.commit()
